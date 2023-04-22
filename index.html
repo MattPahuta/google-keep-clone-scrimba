@@ -5,10 +5,37 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Google Keep Clone</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <main>
+    <header>
+      <img class ="header-logo" src="https://www.gstatic.com/images/branding/product/1x/keep_48dp.png" alt="logo">
+      <h2 class="header-title">Keep</h2>
+    </header>
+    <div id="form-container">
+      <form autocomplete="off" id="form">
+        <input type="text" placeholder="title" id="note-title">
+        <input type="text" placeholder="Take a note..." id="note-text">
+        <div id="form-buttons">
+          <button type="submit" id="submit-button">Submit</button>
+          <button type="button" id="form-close-button">Close</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- display notes -->
+    <div id="notes"></div>
+    <div id="placeholder">
+      <!-- busted link? replace with font awesome icon -->
+      <img src="https://icon.now.sh/lightbulb_outline" alt="light bulb icon" id="placeholder-logo">
+      <p id="placeholder-text">Notes you add appear here</p>
+    </div>
+  </main>
   
-  
+  <script src="app.js"></script>
 </body>
 </html>
