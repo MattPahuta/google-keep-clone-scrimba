@@ -30,10 +30,11 @@ main {
 }
 
 #placeholder-logo {
-  height: 120px;
-  margin: 20px;
-  opacity: 0.1;
-  width: 120px;
+  height: 40px;
+  color: #80868b;
+  /* margin: 20px; */
+  /* opacity: 0.6; */
+  /* width: 120px; */
 }
 
 #placeholder-text {
