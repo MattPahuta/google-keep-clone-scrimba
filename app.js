@@ -19,6 +19,7 @@ class App {
     this.$modalTitle = document.querySelector('.modal-title');
     this.$modalText = document.querySelector('.modal-text');
     this.$modalCloseButton = document.querySelector('.modal-close-button');
+    this.$colorTooltip = document.querySelector('#color-tooltip');
 
     this.addEventListeners();
   }
@@ -28,6 +29,29 @@ class App {
       this.handleFormClick(event);
       this.selectNote(event);
       this.openModal(event);
+    });
+
+    document.body.addEventListener('mouseover', event => {
+      this.openTooltip(event);
+    });
+
+    document.body.addEventListener('mouseout', event => {
+      this.closeTooltip(event);
+    });
+
+    this.$colorTooltip.addEventListener('mouseover', function() {
+      this.style.display = 'flex'; // with function declaration, 'this' refers to the actual element
+    });
+
+    this.$colorTooltip.addEventListener('mouseout', function() {
+      this.style.display = 'none';
+    });
+
+    this.$colorTooltip.addEventListener('click', event => {
+      const color = event.target.dataset.color;
+      if (color) {
+        this.editNoteColor(color);
+      }
     });
 
     this.$form.addEventListener('submit', event => {
@@ -96,6 +120,25 @@ class App {
     this.editNote();
     this.$modal.classList.toggle('open-modal');
   }
+
+  // open tooltip
+  openTooltip(event) {
+    if (!event.target.matches('.toolbar-color')) return;
+    this.id = event.target.dataset.id; 
+    const noteCoords = event.target.getBoundingClientRect(); // get page coordinates of event
+    const horizontal = noteCoords.left;
+    const vertical = window.scrollY - 30;
+    this.$colorTooltip.style.transform = `translate(${horizontal}px, ${vertical}px)`;
+    this.$colorTooltip.style.display = 'flex';
+
+  }
+
+  // close tooltip
+  closeTooltip(event) {
+    if (!event.target.matches('.toolbar-color')) return;
+    this.$colorTooltip.style.display = 'none';
+  }
+
   // add a note
   addNote({title, text}) { // destructure object in arguments
     const newNote = {
@@ -123,6 +166,13 @@ class App {
     this.displayNotes();
   }
 
+  editNoteColor(color) {
+    this.notes = this.notes.map(note => 
+      note.id === Number(this.id) ? { ...note, color } : note
+    );
+    this.displayNotes();
+  }
+
   // select clicked note
   selectNote(event) {
     const $selectedNote = event.target.closest('.note'); // use closest method to get the selected note
@@ -146,14 +196,14 @@ class App {
         <div class="note-text">${note.text}</div>
         <div class="toolbar-container">
           <div class="toolbar">
-            <img class="toolbar-color" src="https://icon.now.sh/palette">
+            <i class="fa-solid fa-palette toolbar-color" data-id=${note.id}></i>
             <img class="toolbar-delete" src="https://icon.now.sh/delete">
           </div>
         </div>
       </div>
     `).join('');
   }
-
+            // <img class="toolbar-color" src="https://icon.now.sh/palette">
 
 }
 
