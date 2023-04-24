@@ -29,6 +29,7 @@ class App {
       this.handleFormClick(event);
       this.selectNote(event);
       this.openModal(event);
+      this.deleteNote(event);
     });
 
     document.body.addEventListener('mouseover', event => {
@@ -107,6 +108,8 @@ class App {
 
   // open the modal
   openModal(event) {
+    if (event.target.matches('.toolbar-delete')) return; // if delete icon clicked, don't open modal
+
     if (event.target.closest('.note')) {// click closest to element with class "note" ?) 
       this.$modal.classList.toggle('open-modal');
       this.$modalTitle.value = this.title;
@@ -184,6 +187,15 @@ class App {
     this.id = $selectedNote.dataset.id;
   }
 
+  // delete note
+  deleteNote(event) {
+    event.stopPropagation();
+    if (!event.target.matches('.toolbar-delete')) return;
+    const id = event.target.dataset.id;
+    this.notes = this.notes.filter(note => note.id !== Number(id)); // update notes array with the selected id filtered out
+    this.displayNotes();
+  }
+
   // display notes
   displayNotes() {
     const hasNotes = this.notes.length > 0;
@@ -197,13 +209,14 @@ class App {
         <div class="toolbar-container">
           <div class="toolbar">
             <i class="fa-solid fa-palette toolbar-color" data-id=${note.id}></i>
-            <img class="toolbar-delete" src="https://icon.now.sh/delete">
+            <i class="fa-solid fa-trash toolbar-delete" data-id=${note.id}></i>
           </div>
         </div>
       </div>
     `).join('');
   }
             // <img class="toolbar-color" src="https://icon.now.sh/palette">
+            // <img class="toolbar-delete" src="https://icon.now.sh/delete">
 
 }
 
