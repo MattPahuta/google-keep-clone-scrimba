@@ -2,7 +2,8 @@
 class App {
   constructor() {
     // data
-    this.notes = [];
+    // this.notes = [];
+    this.notes = JSON.parse(localStorage.getItem('notes')) || []; // ls notes or empty array
     this.title = '';
     this.text = '';
     this.id = '';
@@ -21,6 +22,7 @@ class App {
     this.$modalCloseButton = document.querySelector('.modal-close-button');
     this.$colorTooltip = document.querySelector('#color-tooltip');
 
+    this.render(); // display initial notes
     this.addEventListeners();
   }
 
@@ -153,7 +155,7 @@ class App {
     };
     this.notes = [...this.notes, newNote];
     console.log(this.notes); // debug
-    this.displayNotes();
+    this.render();
     this.closeForm();
   }
 
@@ -166,14 +168,14 @@ class App {
       // convert the id in string format (within html) to a number for comparisons
       note.id === Number(this.id) ? { ...note, title, text } : note
     );
-    this.displayNotes();
+    this.render();
   }
 
   editNoteColor(color) {
     this.notes = this.notes.map(note => 
       note.id === Number(this.id) ? { ...note, color } : note
     );
-    this.displayNotes();
+    this.render();
   }
 
   // select clicked note
@@ -193,6 +195,16 @@ class App {
     if (!event.target.matches('.toolbar-delete')) return;
     const id = event.target.dataset.id;
     this.notes = this.notes.filter(note => note.id !== Number(id)); // update notes array with the selected id filtered out
+    this.render(); // call render instead of displayNotes and saveNotes
+  }
+
+  // save notes to local storage
+  saveNotes() {
+    localStorage.setItem('notes', JSON.stringify(this.notes));
+  }
+
+  render() {
+    this.saveNotes();
     this.displayNotes();
   }
 
